@@ -1,5 +1,5 @@
-import { PlusIcon } from "@heroicons/react/outline";
 import { FC } from "react";
+import { HiOutlinePlus } from "react-icons/hi";
 import tw from "twin.macro";
 
 import { HasChildren, isClickable } from "../../types/GeneralTypes";
@@ -57,7 +57,7 @@ export const AddNewCard: FC<BaseCardProps> = ({}) => {
       onClick={() => console.log('You clicked a "Add New" card !')}
     >
       <p tw="flex">
-        <PlusIcon tw="h-5 w-5 mr-1" />
+        <HiOutlinePlus tw="h-5 w-5 mr-1" />
         Add a card
       </p>
     </EmptyStateCard>

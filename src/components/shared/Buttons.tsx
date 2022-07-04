@@ -1,5 +1,5 @@
-import { PlusIcon } from "@heroicons/react/outline";
 import { FC } from "react";
+import { HiOutlinePlus } from "react-icons/hi";
 import "twin.macro";
 import tw, { css } from "twin.macro";
 
@@ -40,7 +40,7 @@ export const BaseButton: FC<BaseButtonProps> = ({
       onClick={onClick}
       {...props}
     >
-      <PlusIcon tw="pb-1 mr-1" css={sizeStylesIcon} />
+      <HiOutlinePlus tw="pb-1 mr-1" css={sizeStylesIcon} />
       Add a new card
     </button>
   );

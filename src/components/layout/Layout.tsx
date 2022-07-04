@@ -1,6 +1,6 @@
 import { Disclosure, Menu } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { FC, Fragment } from "react";
+import { HiOutlineBell, HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import tw from "twin.macro";
 
@@ -62,7 +62,7 @@ export const Layout: FC<HasChildren> = ({ children }) => {
                       tw="transition bg-slate-800 p-1 rounded-full text-slate-400 hover:text-white focus:(outline-none ring-2 ring-offset-2 ring-offset-slate-800 ring-white)"
                     >
                       <span tw="sr-only">View notifications</span>
-                      <BellIcon tw="h-6 w-6" aria-hidden="true" />
+                      <HiOutlineBell tw="h-6 w-6" aria-hidden="true" />
                     </button>
 
                     {/* Profile dropdown */}
@@ -127,9 +127,9 @@ export const Layout: FC<HasChildren> = ({ children }) => {
                   <Disclosure.Button tw="bg-slate-800 inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:(text-white bg-slate-700) focus:(outline-none ring-2 ring-offset-2 ring-offset-slate-800 ring-white)">
                     <span tw="sr-only">Open main menu</span>
                     {open ? (
-                      <XIcon tw="block h-6 w-6" aria-hidden="true" />
+                      <HiOutlineX tw="block h-6 w-6" aria-hidden="true" />
                     ) : (
-                      <MenuIcon tw="block h-6 w-6" aria-hidden="true" />
+                      <HiOutlineMenu tw="block h-6 w-6" aria-hidden="true" />
                     )}
                   </Disclosure.Button>
                 </div>
@@ -176,7 +176,7 @@ export const Layout: FC<HasChildren> = ({ children }) => {
                     tw="ml-auto bg-slate-800 flex-shrink-0 p-1 rounded-full text-slate-400 hover:text-white focus:(outline-none ring-2 ring-offset-2 ring-offset-slate-800 ring-white)"
                   >
                     <span tw="sr-only">View notifications</span>
-                    <BellIcon tw="h-6 w-6" aria-hidden="true" />
+                    <HiOutlineBell tw="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
 

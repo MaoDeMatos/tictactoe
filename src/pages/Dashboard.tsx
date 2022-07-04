@@ -1,6 +1,5 @@
-import { PlusIcon } from "@heroicons/react/outline";
 import { FC, useState } from "react";
-import "twin.macro";
+import { HiOutlinePlus } from "react-icons/hi";
 import "twin.macro";
 
 import { BaseButton } from "../components/shared/Buttons";
@@ -58,7 +57,7 @@ export const Dashboard: FC = () => {
             // onClick={() => console.log("You clicked an EmptyState card !")}
           >
             <p tw="flex">
-              <PlusIcon tw="h-5 w-5 mr-1" />
+              <HiOutlinePlus tw="h-5 w-5 mr-1" />
               Add a card
             </p>
           </EmptyStateCard>
