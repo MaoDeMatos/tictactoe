@@ -35,6 +35,7 @@ export const BaseButton: FC<BaseButtonProps> = ({
 
   return (
     <button
+      type="button"
       tw="transition ease-in-out border-2 rounded-xl shadow flex items-center justify-center hover:(scale-110) motion-reduce:(transition-none)"
       css={[typeStylesButton, sizeStylesButton]}
       onClick={onClick}
