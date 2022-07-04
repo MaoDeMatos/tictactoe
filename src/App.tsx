@@ -1,8 +1,7 @@
 import { Fragment } from "react";
 import "twin.macro";
 
-import { Router } from "./Routes";
-import { Layout } from "./components/layout/Layout";
+import { Home } from "./pages/Home";
 import GlobalStyles from "./style/GlobalStyles";
 
 const App = () => {
@@ -10,9 +9,11 @@ const App = () => {
     <Fragment>
       <GlobalStyles />
 
-      <Layout>
+      {/* <Layout>
         <Router />
-      </Layout>
+      </Layout> */}
+
+      <Home />
     </Fragment>
   );
 };

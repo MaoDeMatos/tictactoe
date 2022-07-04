@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { HiOutlinePlus } from "react-icons/hi";
 import "twin.macro";
-import tw, { css } from "twin.macro";
+import tw from "twin.macro";
 
 import { HasChildren, isClickable } from "../../types/GeneralTypes";
 
@@ -35,7 +35,7 @@ export const BaseButton: FC<BaseButtonProps> = ({
 
   return (
     <button
-      tw="transition border-2 rounded-xl shadow flex items-center justify-center"
+      tw="transition ease-in-out border-2 rounded-xl shadow flex items-center justify-center hover:(scale-110) motion-reduce:(transition-none)"
       css={[typeStylesButton, sizeStylesButton]}
       onClick={onClick}
       {...props}

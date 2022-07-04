@@ -8,7 +8,7 @@ const customStyles = css({
   },
   body: {
     WebkitTapHighlightColor: theme`colors.primary.700` + "80", // for mobile devices, 80 = opacity 50%
-    ...tw`antialiased bg-slate-50 text-slate-900`,
+    ...tw`antialiased bg-slate-700 text-slate-100`,
   },
   a: {
     ...tw`text-primary-500`,
