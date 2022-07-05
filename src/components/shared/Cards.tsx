@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { ElementType, FC } from "react";
 import tw, { TwStyle } from "twin.macro";
 
 import { HasChildren } from "../../types/GeneralTypes";
 
 export type GlassCardProps = {
-  as?: string;
+  as?: ElementType;
   bgColor?: TwStyle | string;
   size?: "sm" | "md" | "lg";
 } & HasChildren;
