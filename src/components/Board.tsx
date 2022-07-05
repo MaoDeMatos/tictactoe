@@ -4,17 +4,17 @@ import tw, { theme } from "twin.macro";
 import { Cell, Circle, Cross } from "./Board.components";
 import { GlassCard } from "./shared/Cards";
 
-type BoardBoxType = {
+type BoardCellType = {
   position: number;
   checked: "circle" | "cross" | null;
 };
 
 export const Board: FC = () => {
-  const data: BoardBoxType[] = [];
-  const possibleValues: BoardBoxType["checked"][] = ["circle", "cross", null];
+  const boardCells: BoardCellType[] = [];
+  const possibleValues: BoardCellType["checked"][] = ["circle", "cross", null];
 
   for (let i = 1; i <= 9; i++) {
-    data.push({
+    boardCells.push({
       position: i,
       checked:
         possibleValues[Math.floor(Math.random() * possibleValues.length)],
@@ -40,8 +40,9 @@ export const Board: FC = () => {
       tw="grid grid-cols-3 grid-rows-3 grid-flow-row text-3xl rounded-xl overflow-hidden w-64 h-64 border-2 border-primary-900"
       css={{ boxShadow: "0 .25rem 1rem" + theme`colors.primary.900` + "CC" }}
       bgColor={tw`bg-primary-400/25`}
+      size={"md"}
     >
-      {data.map((box, idx) => (
+      {boardCells.map((box, idx) => (
         <Cell key={idx}>
           {box.checked === "circle" ? (
             <Circle />

@@ -17,7 +17,7 @@ const customStyles = css({
     ...tw`px-2 py-1 bg-slate-600 rounded-lg text-slate-100`,
   },
   "::selection": {
-    ...tw`bg-primary-200 text-slate-900`,
+    ...tw`bg-primary-300 text-slate-900`,
   },
 });
 
