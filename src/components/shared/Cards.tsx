@@ -1,5 +1,5 @@
 import { FC } from "react";
-import "twin.macro";
+import tw, { TwStyle } from "twin.macro";
 
 import { HasChildren } from "../../types/GeneralTypes";
 
@@ -11,9 +11,17 @@ export const BaseCard: FC<HasChildren> = ({ children, ...props }) => {
   );
 };
 
-export const GlassCard: FC<HasChildren> = ({ children, ...props }) => {
+export type GlassCardProps = {
+  bgColor?: TwStyle | string;
+} & HasChildren;
+
+export const GlassCard: FC<GlassCardProps> = ({
+  children,
+  bgColor = tw`bg-slate-200/25`,
+  ...props
+}) => {
   return (
-    <BaseCard tw="bg-slate-200/25 backdrop-blur-sm" {...props}>
+    <BaseCard css={[bgColor, tw`backdrop-blur-sm`]} {...props}>
       {children}
     </BaseCard>
   );

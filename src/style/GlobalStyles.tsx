@@ -11,7 +11,7 @@ const customStyles = css({
     ...tw`antialiased bg-slate-900 text-slate-100`,
   },
   a: {
-    ...tw`text-primary-400`,
+    ...tw`transition-colors underline hover:text-primary-400`,
   },
   code: {
     ...tw`px-2 py-1 bg-slate-600 rounded-lg text-slate-100`,
