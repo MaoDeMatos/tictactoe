@@ -35,5 +35,8 @@
     "twin.macro": "^2.8.2",
     "typescript": "^4.7.4",
     "vite": "^2.9.13"
+  },
+  "resolutions": {
+    "esbuild": "0.14.44"
   }
 }
