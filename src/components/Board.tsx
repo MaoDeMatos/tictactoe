@@ -6,12 +6,12 @@ import { GlassCard } from "./shared/Cards";
 
 type BoardCellType = {
   position: number;
-  checked: "circle" | "cross" | null;
+  checked: "o" | "x" | null;
 };
 
 export const Board: FC = () => {
   const boardCells: BoardCellType[] = [];
-  const possibleValues: BoardCellType["checked"][] = ["circle", "cross", null];
+  const possibleValues: BoardCellType["checked"][] = ["o", "x", null];
 
   for (let i = 1; i <= 9; i++) {
     boardCells.push({
@@ -44,13 +44,13 @@ export const Board: FC = () => {
     >
       {boardCells.map((box, idx) => (
         <Cell key={idx}>
-          {box.checked === "circle" ? (
+          {box.checked === "o" ? (
             <Circle />
-          ) : box.checked === "cross" ? (
+          ) : box.checked === "x" ? (
             <Cross />
           ) : // box.position
           null}
-          {box.position}
+          {/* {box.position} */}
         </Cell>
       ))}
     </GlassCard>
