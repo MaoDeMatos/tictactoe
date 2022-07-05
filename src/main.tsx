@@ -1,13 +1,14 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+import "twin.macro";
 
-// import { BrowserRouter } from "react-router-dom";
-import App from "./App";
+import { Home } from "./pages/Home";
+import GlobalStyles from "./style/GlobalStyles";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {/* <BrowserRouter> */}
-    <App />
-    {/* </BrowserRouter> */}
+    <GlobalStyles />
+
+    <Home />
   </StrictMode>
 );
