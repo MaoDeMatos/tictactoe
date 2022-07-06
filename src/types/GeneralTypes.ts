@@ -14,3 +14,5 @@ export type MessageType = {
   error: boolean;
   message: string;
 };
+
+export type BoardCellType = "o" | "x" | null;
