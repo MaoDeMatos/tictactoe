@@ -19,14 +19,22 @@ export const Home: FC = () => {
         tw="flex flex-col justify-center items-center h-full w-full gap-4 p-4 sm:p-8"
       >
         <div tw="flex flex-col justify-center items-center text-center font-bold">
-          <a
+          <motion.a
+            drag
+            dragSnapToOrigin
+            dragConstraints={{
+              top: -4,
+              left: -4,
+              right: 4,
+              bottom: 4,
+            }}
             href="https://github.com/MaoDeMatos/tictactoe"
             target="_blank"
             rel="noreferrer noopener"
             tw="absolute top-4 right-4"
           >
             <SiGithub tw="h-8 w-8" />
-          </a>
+          </motion.a>
 
           <h1
             tw="text-5xl sm:text-8xl font-montserrat mb-4 sm:mb-8"
