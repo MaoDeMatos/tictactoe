@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { HiOutlineX } from "react-icons/hi";
-import tw, { css } from "twin.macro";
+import tw, { css, theme } from "twin.macro";
 
 import { HasChildren } from "../../types/GeneralTypes";
 
@@ -10,8 +10,11 @@ export const Cross = tw(HiOutlineX)`w-full h-full`;
 export const Cell: FC<HasChildren> = props => (
   <div
     tw="relative transition flex justify-center items-center cursor-pointer hover:(bg-slate-100 text-primary-900) border border-transparent p-2"
-    // Inner grid borders
+    // Child shadow & Inner grid borders
     css={css`
+      & > * {
+        filter: drop-shadow(0 0 0.25rem ${theme`colors.primary.600`});
+      }
       &:nth-of-type(-n + 3) {
         ${tw`border-b-slate-50`}
       }
