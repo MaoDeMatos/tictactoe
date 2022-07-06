@@ -3,7 +3,7 @@ import "twin.macro";
 
 import { PlayerType } from "../../types/GeneralTypes";
 
-import { capitalizeFirstLetter, messagesToDisplay } from "../../utils";
+import { capitalizeFirstLetter, findMessageByName } from "../../utils";
 import { trigger } from "../../utils/events";
 import { GlassCard } from "../shared/Cards";
 
@@ -29,7 +29,7 @@ export const NameInput: FC<NameInputProps> = ({
       playerNameInput.value.length < 3 ||
       playerNameInput.value.length > 15
     ) {
-      trigger("changeMessage", messagesToDisplay.nameError);
+      trigger("changeMessage", findMessageByName("nameError"));
       return;
     }
 
@@ -37,11 +37,7 @@ export const NameInput: FC<NameInputProps> = ({
       ...player,
       name: capitalizeFirstLetter(playerNameInput.value).trim(),
     });
-    changePage();
-  }
 
-  function changePage() {
-    trigger("changeMessage", messagesToDisplay.initBoard);
     setPage("board");
   }
 

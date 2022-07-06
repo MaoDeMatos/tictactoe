@@ -8,3 +8,9 @@ export type PlayerType = {
   name: string;
   symbol: "o" | "x";
 };
+
+export type MessageType = {
+  name: string;
+  error: boolean;
+  message: string;
+};

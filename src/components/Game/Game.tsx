@@ -1,20 +1,38 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import "twin.macro";
 
 import { PlayerType } from "../../types/GeneralTypes";
 
-import { Board } from "../Board/Board";
+import { findMessageByName } from "../../utils";
+import { trigger } from "../../utils/events";
+import { Board } from "../Board";
 import { NameInput } from "./NameInput";
 
-export const MainContent: FC = () => {
-  const [selectedPage, setSelectedPage] = useState("setup");
+export const Game: FC = () => {
+  const [selectedPage, setSelectedPage] = useState<
+    "setup" | "board" | "results"
+  >("board");
   const [player, setPlayer] = useState<PlayerType>({ name: "", symbol: "o" });
-  const AI: PlayerType = { name: "the AI", symbol: "x" };
+  // const AI: PlayerType = { name: "the AI", symbol: "x" };
+
+  useEffect(() => {
+    if (selectedPage === "setup") {
+      trigger("changeMessage", findMessageByName("enterYourName"));
+    } else if (selectedPage === "board") {
+      trigger("changeMessage", findMessageByName("initBoard"));
+    } else if (selectedPage === "results") {
+      trigger("changeMessage", findMessageByName("resultsHeader"));
+    }
+  }, [selectedPage]);
 
   return (
-    <main>
-      <button
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ opacity: { delay: 1.5, duration: 2 } }}
+    >
+      {/* <button
         type="button"
         onClick={() =>
           selectedPage === "setup"
@@ -22,8 +40,8 @@ export const MainContent: FC = () => {
             : setSelectedPage("setup")
         }
       >
-        Page toggle {/* Temporary */}
-      </button>
+        Page toggle
+      </button> */}
 
       <AnimatePresence exitBeforeEnter>
         <motion.div
@@ -46,6 +64,6 @@ export const MainContent: FC = () => {
           ) : null}
         </motion.div>
       </AnimatePresence>
-    </main>
+    </motion.main>
   );
 };

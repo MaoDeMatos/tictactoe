@@ -2,13 +2,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import tw from "twin.macro";
 
-import { messagesToDisplay } from "../utils";
+import { findMessageByName } from "../utils";
 import { off, on } from "../utils/events";
 
 export const Informations = () => {
-  const [informations, setInformations] = useState(
-    messagesToDisplay.enterYourName
-  );
+  const [informations, setInformations] = useState(findMessageByName());
 
   function handleInformationsChange(e: CustomEvent) {
     setInformations(e.detail);
