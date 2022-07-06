@@ -1,8 +1,8 @@
 import { FC } from "react";
 import tw, { theme } from "twin.macro";
 
+import { GlassCard } from "../shared/Cards";
 import { Cell, Circle, Cross } from "./Board.components";
-import { GlassCard } from "./shared/Cards";
 
 type BoardCellType = {
   position: number;

@@ -6,7 +6,6 @@ import { messagesToDisplay } from "../utils";
 import { off, on } from "../utils/events";
 
 export const Informations = () => {
-  // const [showInformations, setShowInformations] = useState(true);
   const [informations, setInformations] = useState(
     messagesToDisplay.enterYourName
   );
@@ -15,6 +14,8 @@ export const Informations = () => {
     setInformations(e.detail);
   }
 
+  // "informations" changes when a new "changeMessage" event is catched
+  // useEffect will add the listener on mount and remove it on dismount
   useEffect(() => {
     on("changeMessage", handleInformationsChange);
 
@@ -23,7 +24,6 @@ export const Informations = () => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      {/* {showInformations && ( */}
       <motion.h2
         key={informations.message}
         initial={{ opacity: 0 }}
@@ -35,7 +35,6 @@ export const Informations = () => {
       >
         <p tw="relative">{informations.message}</p>
       </motion.h2>
-      {/* )} */}
     </AnimatePresence>
   );
 };

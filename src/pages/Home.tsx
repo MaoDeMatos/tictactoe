@@ -4,7 +4,7 @@ import { SiGithub } from "react-icons/si";
 import "twin.macro";
 
 import { Informations } from "../components/Informations";
-import { TicTacToe } from "../components/TicTacToe";
+import { MainContent } from "../components/mainContent";
 import Particles from "../components/shared/Particles";
 
 export const Home: FC = () => {
@@ -12,7 +12,7 @@ export const Home: FC = () => {
     <Fragment>
       <Particles />
 
-      <motion.main
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ opacity: { delay: 1, duration: 2 } }}
@@ -48,10 +48,8 @@ export const Home: FC = () => {
           <Informations />
         </div>
 
-        <TicTacToe />
-      </motion.main>
-
-      {/* History */}
+        <MainContent />
+      </motion.div>
     </Fragment>
   );
 };
