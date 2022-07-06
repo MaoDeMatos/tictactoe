@@ -3,8 +3,8 @@ import { FC, Fragment } from "react";
 import { SiGithub } from "react-icons/si";
 import "twin.macro";
 
+import { Game } from "../components/Game/Game";
 import { Informations } from "../components/Informations";
-import { MainContent } from "../components/mainContent";
 import Particles from "../components/shared/Particles";
 
 export const Home: FC = () => {
@@ -48,7 +48,7 @@ export const Home: FC = () => {
           <Informations />
         </div>
 
-        <MainContent />
+        <Game />
       </motion.div>
     </Fragment>
   );
