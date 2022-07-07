@@ -4,6 +4,7 @@ import tw, { theme } from "twin.macro";
 
 import { PlayerCheckMark } from "../../types/GeneralTypes";
 
+import { useGameContext } from "../../contexts/gameContext";
 import { GlassCard } from "../shared/Cards";
 import { Cell, Circle, Cross } from "./Board.components";
 
@@ -11,6 +12,8 @@ export const Board: FC<{
   boardCells: PlayerCheckMark[];
   clickHandler: (id: number) => void;
 }> = ({ boardCells, clickHandler }) => {
+  const { gameState } = useGameContext();
+
   return (
     <motion.div drag dragSnapToOrigin>
       <GlassCard
@@ -20,7 +23,12 @@ export const Board: FC<{
         size={"md"}
       >
         {boardCells.map((box, idx) => (
-          <Cell key={idx} onClick={() => clickHandler(idx)}>
+          <Cell
+            key={idx}
+            onClick={() =>
+              gameState.nextPlayer === "human" ? clickHandler(idx) : null
+            }
+          >
             <AnimatePresence>
               {box === "o" ? (
                 <Circle
