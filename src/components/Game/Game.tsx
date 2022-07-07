@@ -63,7 +63,7 @@ export const Game: FC = () => {
   const findCell = (boardCells: PlayerCheckMark[], player: PlayerType) => {
     const opponent = gameState.players.human;
 
-    const minmax = (boardCells: PlayerCheckMark[], targetMax: boolean) => {
+    const minmax = (boardCells: PlayerCheckMark[], isPlayerTurn: boolean) => {
       const winningSymbol = calculateWin(boardCells);
 
       // "Cell" represents cell index in the board
@@ -71,16 +71,17 @@ export const Game: FC = () => {
       if (winningSymbol === opponent.symbol) return { cell: -1, score: -1 };
       if (isBoardFilled(boardCells)) return { cell: -1, score: 0 };
 
-      const bestCell = { cell: -1, score: targetMax ? -1000 : 1000 };
+      // If isPlayerTurn, we want to maximize score, and minimize otherwise
+      const bestCell = { cell: -1, score: isPlayerTurn ? -1000 : 1000 };
 
       for (let i = 0; i < boardCells.length; i++) {
         if (boardCells[i]) continue;
 
-        boardCells[i] = targetMax ? player.symbol : opponent.symbol;
-        const score = minmax(boardCells, !targetMax).score;
+        boardCells[i] = isPlayerTurn ? player.symbol : opponent.symbol;
+        const score = minmax(boardCells, !isPlayerTurn).score;
         boardCells[i] = null;
 
-        if (targetMax) {
+        if (isPlayerTurn) {
           if (score > bestCell.score) {
             bestCell.score = score;
             bestCell.cell = i;
