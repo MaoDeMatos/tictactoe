@@ -4,10 +4,6 @@ export type HasChildren = {
   children?: ReactNode | undefined;
 };
 
-// export type isClickable = {
-//   onClick?: (e: MouseEvent) => void;
-// };
-
 export type isClickable = {
   onClick?: (e: MouseEvent) => void;
 };

@@ -1,19 +1,14 @@
 import { FC, MouseEvent } from "react";
 import "twin.macro";
 
-import { PlayerType } from "../../types/GeneralTypes";
-
+import { useGameContext } from "../../contexts/gameContext";
 import { capitalizeFirstLetter, findMessageByName } from "../../utils";
 import { trigger } from "../../utils/events";
 import { GlassCard } from "../shared/Cards";
 
-export type NameInputProps = {
-  setPage: Function;
-  human: PlayerType;
-  setHuman: Function;
-};
+export const NameInput: FC = () => {
+  const { gameState, setGameState } = useGameContext();
 
-export const NameInput: FC<NameInputProps> = ({ setPage, human, setHuman }) => {
   function checkValue(e: MouseEvent) {
     e.preventDefault();
     const playerNameInput: HTMLInputElement | null = document.querySelector(
@@ -29,12 +24,17 @@ export const NameInput: FC<NameInputProps> = ({ setPage, human, setHuman }) => {
       return;
     }
 
-    setHuman({
-      ...human,
-      name: capitalizeFirstLetter(playerNameInput.value).trim(),
+    setGameState({
+      players: {
+        ...gameState.players,
+        human: {
+          ...gameState.players.human,
+          name: capitalizeFirstLetter(playerNameInput.value).trim(),
+        },
+      },
     });
 
-    setPage("board");
+    setGameState({ selectedPage: "board" });
   }
 
   return (
@@ -49,7 +49,7 @@ export const NameInput: FC<NameInputProps> = ({ setPage, human, setHuman }) => {
         minLength={2}
         maxLength={15}
         tw="relative -bottom-0.5 w-full bg-transparent outline-none ring-transparent border-transparent"
-        defaultValue={human.name}
+        defaultValue={gameState.players.human.name}
         placeholder="2 - 15 chars"
       />
       <button

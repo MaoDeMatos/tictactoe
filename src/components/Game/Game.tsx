@@ -1,90 +1,55 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { FC, useEffect, useReducer, useState } from "react";
+import { FC, useEffect } from "react";
 import "twin.macro";
 
-import { PlayerType, Players, Symbol } from "../../types/GeneralTypes";
+import { Players, Symbol } from "../../types/GeneralTypes";
 
+import { useGameContext } from "../../contexts/gameContext";
 import { calculateWin, findMessageByName, isBoardFilled } from "../../utils";
 import { trigger } from "../../utils/events";
 import { Board } from "../Board";
 import { NameInput } from "./NameInput";
 import { SymbolSelector } from "./SymbolSelector";
 
-type GameStateType = {
-  selectedPage: "setup" | "board" | "results";
-  players: Players;
-  nextPlayer: keyof Players;
-  boardCells: Symbol[];
-  currentGameIs: "in progress" | "finished" | "tie";
-};
-
-const GameStateReducer = (prevState: any, action: any) => {
-  return {};
-};
-
 export const Game: FC = () => {
-  const gameStateDefaultValue: GameStateType = {
-    selectedPage: "setup",
-    players: {
-      human: { name: "David", symbol: "o" },
-      ai: { name: "the AI", symbol: "x" },
-    },
-    nextPlayer: "human",
-    boardCells: Array(9).fill(null),
-    currentGameIs: "in progress",
-  };
-
-  const reducer = useReducer(GameStateReducer, gameStateDefaultValue);
-
-  const [selectedPage, setSelectedPage] = useState<
-    "setup" | "board" | "results"
-  >("setup");
-  const [players, setPlayers] = useState<Players>({
-    human: { name: "David", symbol: "o" },
-    ai: { name: "the AI", symbol: "x" },
-  });
-  const [nextPlayer, setNextPlayer] = useState<keyof Players>("human");
-
-  // const baseBoardData: Symbol[] = ["o", "o", "o", "x", "x", "x", "x", "x", "x"];
-  const baseBoardData = Array(9).fill(null);
-  const [boardCells, setBoardCells] = useState<Symbol[]>(baseBoardData);
-
-  const [currentGameIs, setCurrentGameIs] = useState<
-    "in progress" | "finished" | "tie"
-  >("in progress");
-
-  const toggleNextPlayer = () => {
-    setNextPlayer(nextPlayer === "human" ? "ai" : "human");
-  };
+  const { gameState, setGameState, resetGame } = useGameContext();
 
   const findPlayerWithSymbol = (symbol: Symbol) => {
-    return players.human.symbol === symbol ? players.human : players.ai;
+    return gameState.players.human.symbol === symbol
+      ? gameState.players.human
+      : gameState.players.ai;
   };
 
-  const setHuman = (human: PlayerType) => {
-    setPlayers({ human: human, ai: players.ai });
+  const toggleNextPlayer = () => {
+    setGameState({
+      nextPlayer: gameState.nextPlayer === "human" ? "ai" : "human",
+    });
+  };
+
+  const setPlayers = (players: Players) => {
+    setGameState({ players: players });
   };
 
   const handleClick = (id: number) => {
-    if (currentGameIs !== "in progress") return;
+    if (gameState.currentGameStatus !== "in progress") return;
 
-    if (boardCells[id]) {
+    if (gameState.boardCells[id]) {
       trigger("changeMessage", findMessageByName("cellNotEmptyError"));
       return;
     }
 
     // Create new array from boardCells as
     // using its ref won't fire a re-render
-    const newBoard = [...boardCells];
-    newBoard[id] = players[nextPlayer].symbol;
+    const newBoard = [...gameState.boardCells];
+    newBoard[id] = gameState.players[gameState.nextPlayer].symbol;
 
-    setBoardCells(newBoard);
+    setGameState({ boardCells: newBoard });
 
     const winningSymbol = calculateWin(newBoard);
 
     if (isBoardFilled(newBoard) && !winningSymbol) {
       trigger("changeMessage", findMessageByName("gameTie"));
-      setCurrentGameIs("tie");
+      setGameState({ currentGameStatus: "tie" });
       return;
     }
 
@@ -93,7 +58,7 @@ export const Game: FC = () => {
         "changeMessage",
         findMessageByName("gameWon")(findPlayerWithSymbol(winningSymbol).name)
       );
-      setCurrentGameIs("finished");
+      setGameState({ currentGameStatus: "finished" });
       return;
     }
 
@@ -104,23 +69,25 @@ export const Game: FC = () => {
   useEffect(() => {
     trigger(
       "changeMessage",
-      findMessageByName("playerTurn")(players[nextPlayer].name)
+      findMessageByName("playerTurn")(
+        gameState.players[gameState.nextPlayer].name
+      )
     );
-  }, [nextPlayer]);
+  }, [gameState.nextPlayer]);
 
   // Trigger events on "selectedPage" change
   useEffect(() => {
-    if (selectedPage === "setup") {
+    if (gameState.selectedPage === "setup") {
       trigger("changeMessage", findMessageByName("enterYourName"));
-    } else if (selectedPage === "board") {
+    } else if (gameState.selectedPage === "board") {
       trigger(
         "changeMessage",
-        findMessageByName("initBoard")(players.human.symbol)
+        findMessageByName("initBoard")(gameState.players.human.symbol)
       );
-    } else if (selectedPage === "results") {
+    } else if (gameState.selectedPage === "results") {
       trigger("changeMessage", findMessageByName("resultsHeader"));
     }
-  }, [selectedPage]);
+  }, [gameState.selectedPage]);
 
   return (
     <motion.main
@@ -141,24 +108,23 @@ export const Game: FC = () => {
 
       <AnimatePresence exitBeforeEnter>
         <motion.div
-          key={selectedPage}
+          key={gameState.selectedPage}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
         >
-          {selectedPage === "setup" ? (
+          {gameState.selectedPage === "setup" ? (
             <div tw="flex flex-col justify-center items-center gap-6">
-              <SymbolSelector players={players} setPlayers={setPlayers} />
-              <NameInput
-                setPage={setSelectedPage}
-                human={players.human}
-                setHuman={setHuman}
-              />
+              <SymbolSelector />
+              <NameInput />
             </div>
-          ) : selectedPage === "board" ? (
-            <Board boardCells={boardCells} clickHandler={handleClick} />
-          ) : selectedPage === "results" ? (
+          ) : gameState.selectedPage === "board" ? (
+            <Board
+              boardCells={gameState.boardCells}
+              clickHandler={handleClick}
+            />
+          ) : gameState.selectedPage === "results" ? (
             <div>Results</div>
           ) : null}
         </motion.div>

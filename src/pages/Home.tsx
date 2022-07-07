@@ -6,6 +6,7 @@ import "twin.macro";
 import { Game } from "../components/Game/Game";
 import { Informations } from "../components/Informations";
 import Particles from "../components/shared/Particles";
+import { GameContextProvider } from "../contexts/gameContext";
 
 export const Home: FC = () => {
   return (
@@ -48,7 +49,9 @@ export const Home: FC = () => {
           <Informations />
         </div>
 
-        <Game />
+        <GameContextProvider>
+          <Game />
+        </GameContextProvider>
       </motion.div>
     </Fragment>
   );
