@@ -2,6 +2,9 @@ import { Dispatch, FC, createContext, useContext, useReducer } from "react";
 
 import { HasChildren, Players, Symbol } from "../types/GeneralTypes";
 
+import { findMessageByName } from "../utils";
+import { trigger } from "../utils/events";
+
 export type GameState = {
   selectedPage: "setup" | "board" | "results";
   players: Players;
@@ -37,7 +40,15 @@ const GameContextProvider: FC<HasChildren> = props => {
   );
 
   const resetGame = () => {
-    setGameState(gameStateDefaultValue);
+    setGameState({
+      ...gameStateDefaultValue,
+      players: gameState.players,
+      selectedPage: gameState.selectedPage,
+    });
+    trigger(
+      "changeMessage",
+      findMessageByName("initBoard")(gameState.players.human.symbol)
+    );
   };
 
   return (
