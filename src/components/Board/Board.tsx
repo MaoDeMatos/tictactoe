@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 import { FC } from "react";
 import tw, { theme } from "twin.macro";
 
-import { Symbol } from "../../types/GeneralTypes";
+import { PlayerCheckMark } from "../../types/GeneralTypes";
 
 import { GlassCard } from "../shared/Cards";
 import { Cell, Circle, Cross } from "./Board.components";
 
 export const Board: FC<{
-  boardCells: Symbol[];
+  boardCells: PlayerCheckMark[];
   clickHandler: (id: number) => void;
 }> = ({ boardCells, clickHandler }) => {
   return (

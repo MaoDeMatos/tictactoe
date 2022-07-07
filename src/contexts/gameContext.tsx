@@ -1,6 +1,6 @@
 import { Dispatch, FC, createContext, useContext, useReducer } from "react";
 
-import { HasChildren, Players, Symbol } from "../types/GeneralTypes";
+import { HasChildren, PlayerCheckMark, Players } from "../types/GeneralTypes";
 
 import { findMessageByName } from "../utils";
 import { trigger } from "../utils/events";
@@ -9,7 +9,7 @@ export type GameState = {
   selectedPage: "setup" | "board" | "results";
   players: Players;
   nextPlayer: keyof Players;
-  boardCells: Symbol[];
+  boardCells: PlayerCheckMark[];
   currentGameStatus: "in progress" | "finished" | "tie";
 };
 

@@ -1,4 +1,4 @@
-import { MessageType, Symbol } from "../types/GeneralTypes";
+import { MessageType, PlayerCheckMark } from "../types/GeneralTypes";
 
 import { capitalizeFirstLetter } from ".";
 
@@ -21,7 +21,7 @@ export const messagesToDisplay: MessagesToDisplayType = [
     type: "default",
     message: "Enter your name !",
   }),
-  (symbol: Symbol) => ({
+  (symbol: PlayerCheckMark) => ({
     name: "initBoard",
     type: "default",
     message: `Click on an empty box to place a ${

@@ -8,11 +8,11 @@ export type isClickable = {
   onClick?: (e: MouseEvent) => void;
 };
 
-export type Symbol = "o" | "x" | null;
+export type PlayerCheckMark = "o" | "x" | null;
 
 export type PlayerType = {
   name: string;
-  symbol: Symbol;
+  symbol: PlayerCheckMark;
 };
 
 export type Players = {

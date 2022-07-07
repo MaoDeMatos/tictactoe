@@ -2,7 +2,7 @@ import { Switch } from "@headlessui/react";
 import { FC, useState } from "react";
 import tw from "twin.macro";
 
-import type { Symbol } from "../../types/GeneralTypes";
+import type { PlayerCheckMark } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
 import { GlassStyles } from "../../style/GlassStyles";
@@ -15,7 +15,9 @@ export const SymbolSelector: FC = () => {
   const handleChange = () => {
     const nextState = !enabled;
     setEnabled(nextState);
-    const [humanSym, aiSym]: Symbol[] = nextState ? ["o", "x"] : ["x", "o"];
+    const [humanSym, aiSym]: PlayerCheckMark[] = nextState
+      ? ["o", "x"]
+      : ["x", "o"];
     setGameState({
       players: {
         human: { ...gameState.players.human, symbol: humanSym },

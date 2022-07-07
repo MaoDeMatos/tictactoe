@@ -1,4 +1,4 @@
-import { Symbol } from "./../types/GeneralTypes";
+import { PlayerCheckMark } from "./../types/GeneralTypes";
 
 import { messagesToDisplay } from "./messages";
 
@@ -10,7 +10,7 @@ export const findMessageByName = (messageName: string = "") =>
   messagesToDisplay.find(el => el().name === messageName) ??
   messagesToDisplay[0];
 
-export const calculateWin = (boardCells: Symbol[]) => {
+export const calculateWin = (boardCells: PlayerCheckMark[]) => {
   const winningCombinations = [
     // Horizontal
     [1, 2, 3],
@@ -39,6 +39,6 @@ export const calculateWin = (boardCells: Symbol[]) => {
   return null;
 };
 
-export const isBoardFilled = (boardCells: Symbol[]) => {
+export const isBoardFilled = (boardCells: PlayerCheckMark[]) => {
   return boardCells.includes(null) ? false : true;
 };

@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect } from "react";
 import "twin.macro";
 
-import { Players, Symbol } from "../../types/GeneralTypes";
+import { PlayerCheckMark, Players } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
 import { calculateWin, findMessageByName, isBoardFilled } from "../../utils";
@@ -14,7 +14,7 @@ import { SymbolSelector } from "./SymbolSelector";
 export const Game: FC = () => {
   const { gameState, setGameState, resetGame } = useGameContext();
 
-  const findPlayerWithSymbol = (symbol: Symbol) => {
+  const findPlayerWithSymbol = (symbol: PlayerCheckMark) => {
     return gameState.players.human.symbol === symbol
       ? gameState.players.human
       : gameState.players.ai;
