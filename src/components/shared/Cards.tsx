@@ -3,6 +3,8 @@ import tw, { TwStyle } from "twin.macro";
 
 import { HasChildren } from "../../types/GeneralTypes";
 
+import { GlassStyles } from "../../style/GlassStyles";
+
 export type GlassCardProps = {
   as?: ElementType;
   bgColor?: TwStyle | string;
@@ -18,8 +20,8 @@ export const GlassCard: FC<GlassCardProps> = ({
   return (
     <Component
       css={[
-        tw`backdrop-blur-sm`,
-        bgColor ?? tw`bg-slate-200/25`,
+        bgColor ?? tw`bg-slate-200`,
+        GlassStyles,
         size === "sm"
           ? tw`rounded-md p-1`
           : size === "lg"

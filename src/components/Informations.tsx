@@ -29,7 +29,13 @@ export const Informations = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
         tw="sm:text-xl font-montserrat mb-8 sm:mb-16"
-        css={[informations.error ? tw`text-red-300` : null]}
+        css={[
+          informations.type === "error"
+            ? tw`text-red-300`
+            : informations.type === "victory"
+            ? tw`text-primary-400`
+            : null,
+        ]}
       >
         <p tw="relative">{informations.message}</p>
       </motion.h2>

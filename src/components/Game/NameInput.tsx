@@ -9,15 +9,11 @@ import { GlassCard } from "../shared/Cards";
 
 export type NameInputProps = {
   setPage: Function;
-  player: PlayerType;
-  setPlayer: Function;
+  human: PlayerType;
+  setHuman: Function;
 };
 
-export const NameInput: FC<NameInputProps> = ({
-  setPage,
-  player,
-  setPlayer,
-}) => {
+export const NameInput: FC<NameInputProps> = ({ setPage, human, setHuman }) => {
   function checkValue(e: MouseEvent) {
     e.preventDefault();
     const playerNameInput: HTMLInputElement | null = document.querySelector(
@@ -26,15 +22,15 @@ export const NameInput: FC<NameInputProps> = ({
 
     if (
       !playerNameInput?.value ||
-      playerNameInput.value.length < 3 ||
+      playerNameInput.value.length < 2 ||
       playerNameInput.value.length > 15
     ) {
       trigger("changeMessage", findMessageByName("nameError"));
       return;
     }
 
-    setPlayer({
-      ...player,
+    setHuman({
+      ...human,
       name: capitalizeFirstLetter(playerNameInput.value).trim(),
     });
 
@@ -53,8 +49,8 @@ export const NameInput: FC<NameInputProps> = ({
         minLength={2}
         maxLength={15}
         tw="relative -bottom-0.5 w-full bg-transparent outline-none ring-transparent border-transparent"
-        defaultValue={player.name}
-        placeholder="3 - 15 chars"
+        defaultValue={human.name}
+        placeholder="2 - 15 chars"
       />
       <button
         type="submit"

@@ -1,8 +1,8 @@
-import { BoardCellType } from "./../types/GeneralTypes";
+import { Symbol } from "./../types/GeneralTypes";
 
 import { messagesToDisplay } from "./messages";
 
-export const capitalizeFirstLetter = (text: string) => {
+export const capitalizeFirstLetter = (text: string = "") => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
@@ -10,7 +10,7 @@ export const findMessageByName = (messageName: string = "") =>
   messagesToDisplay.find(el => el().name === messageName) ??
   messagesToDisplay[0];
 
-export const calculateWin = (boardCells: BoardCellType[]) => {
+export const calculateWin = (boardCells: Symbol[]) => {
   const winningCombinations = [
     // Horizontal
     [1, 2, 3],
@@ -27,19 +27,18 @@ export const calculateWin = (boardCells: BoardCellType[]) => {
 
   for (const [a, b, c] of winningCombinations) {
     if (
-      boardCells[a - 1] === "o" &&
-      boardCells[b - 1] === "o" &&
-      boardCells[c - 1] === "o"
+      boardCells[a - 1] &&
+      boardCells[a - 1] === boardCells[b - 1] &&
+      boardCells[a - 1] === boardCells[c - 1]
     ) {
-      return "o";
-    } else if (
-      boardCells[a - 1] === "x" &&
-      boardCells[b - 1] === "x" &&
-      boardCells[c - 1] === "x"
-    ) {
-      return "x";
+      // return [boardCells[a - 1], [a, b, c]];
+      return boardCells[a - 1];
     }
   }
 
   return null;
+};
+
+export const isBoardFilled = (boardCells: Symbol[]) => {
+  return boardCells.includes(null) ? false : true;
 };
