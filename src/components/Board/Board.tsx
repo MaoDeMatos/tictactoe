@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FC } from "react";
 import tw, { theme } from "twin.macro";
 
@@ -21,7 +21,26 @@ export const Board: FC<{
       >
         {boardCells.map((box, idx) => (
           <Cell key={idx} onClick={() => clickHandler(idx)}>
-            {box === "o" ? <Circle /> : box === "x" ? <Cross /> : null}
+            <AnimatePresence>
+              {box === "o" ? (
+                <Circle
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.25 }}
+                />
+              ) : box === "x" ? (
+                <Cross
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.25 }}
+                  tw="w-4/5 h-4/5"
+                />
+              ) : null}
+            </AnimatePresence>
           </Cell>
         ))}
       </GlassCard>

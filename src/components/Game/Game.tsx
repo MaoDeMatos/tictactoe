@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect } from "react";
+import { FaSync } from "react-icons/fa";
 import "twin.macro";
 
 import { PlayerCheckMark, Players } from "../../types/GeneralTypes";
@@ -91,9 +92,9 @@ export const Game: FC = () => {
 
   return (
     <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ opacity: { delay: 1.5, duration: 2 } }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 1.5, duration: 1 }}
     >
       {/* <button
         type="button"
@@ -109,11 +110,29 @@ export const Game: FC = () => {
       <AnimatePresence exitBeforeEnter>
         <motion.div
           key={gameState.selectedPage}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.25 }}
+          tw="flex flex-col justify-center items-center gap-8"
         >
+          <AnimatePresence>
+            {gameState.currentGameStatus !== "in progress" && (
+              <motion.button
+                type="button"
+                key={"resetButton"}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.25 }}
+                onClick={() => resetGame()}
+                tw="w-8 h-8"
+              >
+                <FaSync tw="transform transition-transform duration-700 w-full h-full hover:(rotate-180)" />
+              </motion.button>
+            )}
+          </AnimatePresence>
+
           {gameState.selectedPage === "setup" ? (
             <div tw="flex flex-col justify-center items-center gap-6">
               <SymbolSelector />
