@@ -3,7 +3,7 @@ import { FC, useEffect } from "react";
 import { FaSync } from "react-icons/fa";
 import "twin.macro";
 
-import { PlayerCheckMark, Players } from "../../types/GeneralTypes";
+import { PlayerCheckMark, PlayerType, Players } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
 import { calculateWin, findMessageByName, isBoardFilled } from "../../utils";
@@ -27,10 +27,8 @@ export const Game: FC = () => {
     });
   };
 
-  const handleClick = (id: number) => {
-    if (gameState.currentGameStatus !== "in progress") return;
-
-    if (gameState.boardCells[id]) {
+  const tickCell = (idx: number) => {
+    if (gameState.boardCells[idx]) {
       trigger("changeMessage", findMessageByName("cellNotEmptyError"));
       return;
     }
@@ -38,7 +36,7 @@ export const Game: FC = () => {
     // Create new array from boardCells as
     // using its ref won't fire a re-render
     const newBoard = [...gameState.boardCells];
-    newBoard[id] = gameState.players[gameState.nextPlayer].symbol;
+    newBoard[idx] = gameState.players[gameState.nextPlayer].symbol;
 
     setGameState({ boardCells: newBoard });
 
@@ -62,6 +60,51 @@ export const Game: FC = () => {
     toggleNextPlayer();
   };
 
+  const findCell = (boardCells: PlayerCheckMark[], player: PlayerType) => {
+    const opponent = gameState.players.human;
+
+    const minmax = (boardCells: PlayerCheckMark[], targetMax: boolean) => {
+      const winningSymbol = calculateWin(boardCells);
+
+      // "Cell" represents cell index in the board
+      if (winningSymbol === player.symbol) return { cell: -1, score: 1 };
+      if (winningSymbol === opponent.symbol) return { cell: -1, score: -1 };
+      if (isBoardFilled(boardCells)) return { cell: -1, score: 0 };
+
+      const bestCell = { cell: -1, score: targetMax ? -1000 : 1000 };
+
+      for (let i = 0; i < boardCells.length; i++) {
+        if (boardCells[i]) continue;
+
+        boardCells[i] = targetMax ? player.symbol : opponent.symbol;
+        const score = minmax(boardCells, !targetMax).score;
+        boardCells[i] = null;
+
+        if (targetMax) {
+          if (score > bestCell.score) {
+            bestCell.score = score;
+            bestCell.cell = i;
+          }
+        } else {
+          if (score < bestCell.score) {
+            bestCell.score = score;
+            bestCell.cell = i;
+          }
+        }
+      }
+
+      return bestCell;
+    };
+
+    return minmax(boardCells, true).cell;
+  };
+
+  const handleClick = (idx: number) => {
+    if (gameState.currentGameStatus !== "in progress") return;
+
+    tickCell(idx);
+  };
+
   // Trigger events on "nextPlayer" change
   useEffect(() => {
     trigger(
@@ -70,6 +113,21 @@ export const Game: FC = () => {
         gameState.players[gameState.nextPlayer].name
       )
     );
+
+    let timer = setTimeout(() => null, 0);
+
+    if (gameState.nextPlayer === "ai") {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const bestCell = findCell(
+          [...gameState.boardCells],
+          gameState.players.ai
+        );
+        if (bestCell !== -1) tickCell(bestCell);
+      }, 1500);
+    }
+
+    return () => clearTimeout(timer);
   }, [gameState.nextPlayer]);
 
   // Trigger events on "selectedPage" change
