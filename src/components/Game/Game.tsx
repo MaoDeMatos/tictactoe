@@ -27,10 +27,6 @@ export const Game: FC = () => {
     });
   };
 
-  const setPlayers = (players: Players) => {
-    setGameState({ players: players });
-  };
-
   const handleClick = (id: number) => {
     if (gameState.currentGameStatus !== "in progress") return;
 
