@@ -1,4 +1,4 @@
-import { PlayerCheckMark } from "./../types/GeneralTypes";
+import { PlayerCheckMark, PlayerType } from "./../types/GeneralTypes";
 
 import { messagesToDisplay } from "./messages";
 
@@ -9,6 +9,10 @@ export const capitalizeFirstLetter = (text: string = "") => {
 export const findMessageByName = (messageName: string = "") =>
   messagesToDisplay.find(el => el().name === messageName) ??
   messagesToDisplay[0];
+
+export const isBoardFilled = (boardCells: PlayerCheckMark[]) => {
+  return boardCells.includes(null) ? false : true;
+};
 
 export const calculateWin = (boardCells: PlayerCheckMark[]) => {
   const winningCombinations = [
@@ -39,6 +43,42 @@ export const calculateWin = (boardCells: PlayerCheckMark[]) => {
   return null;
 };
 
-export const isBoardFilled = (boardCells: PlayerCheckMark[]) => {
-  return boardCells.includes(null) ? false : true;
+export const findCell = (boardCells: PlayerCheckMark[], player: PlayerType) => {
+  const opponent: PlayerCheckMark = player.symbol === "x" ? "o" : "x";
+
+  const minmax = (boardCells: PlayerCheckMark[], isPlayerTurn: boolean) => {
+    const winningSymbol = calculateWin(boardCells);
+
+    // "Cell" represents cell index in the board
+    if (winningSymbol === player.symbol) return { cell: -1, score: 1 };
+    if (winningSymbol === opponent) return { cell: -1, score: -1 };
+    if (isBoardFilled(boardCells)) return { cell: -1, score: 0 };
+
+    // If isPlayerTurn, we want to maximize score, and minimize otherwise
+    const bestCell = { cell: -1, score: isPlayerTurn ? -1000 : 1000 };
+
+    for (let i = 0; i < boardCells.length; i++) {
+      if (boardCells[i]) continue;
+
+      boardCells[i] = isPlayerTurn ? player.symbol : opponent;
+      const score = minmax(boardCells, !isPlayerTurn).score;
+      boardCells[i] = null;
+
+      if (isPlayerTurn) {
+        if (score > bestCell.score) {
+          bestCell.score = score;
+          bestCell.cell = i;
+        }
+      } else {
+        if (score < bestCell.score) {
+          bestCell.score = score;
+          bestCell.cell = i;
+        }
+      }
+    }
+
+    return bestCell;
+  };
+
+  return minmax(boardCells, true).cell;
 };

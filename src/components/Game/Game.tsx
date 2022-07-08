@@ -3,10 +3,15 @@ import { FC, useEffect } from "react";
 import { FaSync } from "react-icons/fa";
 import "twin.macro";
 
-import { PlayerCheckMark, PlayerType, Players } from "../../types/GeneralTypes";
+import { PlayerCheckMark } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
-import { calculateWin, findMessageByName, isBoardFilled } from "../../utils";
+import {
+  calculateWin,
+  findCell,
+  findMessageByName,
+  isBoardFilled,
+} from "../../utils";
 import { trigger } from "../../utils/events";
 import { Board } from "../Board";
 import { NameInput } from "./NameInput";
@@ -60,53 +65,13 @@ export const Game: FC = () => {
     toggleNextPlayer();
   };
 
-  const findCell = (boardCells: PlayerCheckMark[], player: PlayerType) => {
-    const opponent = gameState.players.human;
-
-    const minmax = (boardCells: PlayerCheckMark[], isPlayerTurn: boolean) => {
-      const winningSymbol = calculateWin(boardCells);
-
-      // "Cell" represents cell index in the board
-      if (winningSymbol === player.symbol) return { cell: -1, score: 1 };
-      if (winningSymbol === opponent.symbol) return { cell: -1, score: -1 };
-      if (isBoardFilled(boardCells)) return { cell: -1, score: 0 };
-
-      // If isPlayerTurn, we want to maximize score, and minimize otherwise
-      const bestCell = { cell: -1, score: isPlayerTurn ? -1000 : 1000 };
-
-      for (let i = 0; i < boardCells.length; i++) {
-        if (boardCells[i]) continue;
-
-        boardCells[i] = isPlayerTurn ? player.symbol : opponent.symbol;
-        const score = minmax(boardCells, !isPlayerTurn).score;
-        boardCells[i] = null;
-
-        if (isPlayerTurn) {
-          if (score > bestCell.score) {
-            bestCell.score = score;
-            bestCell.cell = i;
-          }
-        } else {
-          if (score < bestCell.score) {
-            bestCell.score = score;
-            bestCell.cell = i;
-          }
-        }
-      }
-
-      return bestCell;
-    };
-
-    return minmax(boardCells, true).cell;
-  };
-
   const handleClick = (idx: number) => {
     if (gameState.currentGameStatus !== "in progress") return;
 
     tickCell(idx);
   };
 
-  // Trigger events on "nextPlayer" change
+  // On "nextPlayer" change
   useEffect(() => {
     trigger(
       "changeMessage",
@@ -125,13 +90,13 @@ export const Game: FC = () => {
           gameState.players.ai
         );
         if (bestCell !== -1) tickCell(bestCell);
-      }, 1500);
+      }, 1250);
     }
 
     return () => clearTimeout(timer);
   }, [gameState.nextPlayer]);
 
-  // Trigger events on "selectedPage" change
+  // On "selectedPage" change
   useEffect(() => {
     if (gameState.selectedPage === "setup") {
       trigger("changeMessage", findMessageByName("enterYourName"));
