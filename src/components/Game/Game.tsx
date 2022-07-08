@@ -171,7 +171,7 @@ export const Game: FC = () => {
                 key="resetButton"
                 {...fadeAndGrowAnimation}
                 transition={{ duration: 0.25 }}
-                tw="w-8 h-8 col-start-2"
+                tw="w-8 h-8 col-start-2 row-start-1"
                 onClick={() => resetGame()}
               >
                 <FaSync tw="transform transition-transform duration-700 w-full h-full hover:(rotate-180)" />
@@ -184,7 +184,7 @@ export const Game: FC = () => {
               key="boardPageButton"
               {...fadeAndGrowAnimation}
               transition={{ duration: 0.25 }}
-              tw="w-8 h-8 col-start-2"
+              tw="w-8 h-8 col-start-2 row-start-1"
               onClick={() => setSelectedPage("board")}
             >
               <HiOutlineViewGrid tw="transform transition-transform duration-700 w-full h-full hover:(scale-110)" />
