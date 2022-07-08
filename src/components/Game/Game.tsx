@@ -1,11 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect } from "react";
-import { FaSync } from "react-icons/fa";
-import {
-  HiOutlineCog,
-  HiOutlineViewGrid,
-  HiOutlineViewList,
-} from "react-icons/hi";
 import tw, { styled } from "twin.macro";
 
 import { PlayerCheckMark } from "../../types/GeneralTypes";
@@ -17,31 +11,23 @@ import {
   calculateWin,
   findCell,
   findMessageByName,
-  isBoardEmpty,
   isBoardFilled,
 } from "../../utils";
 import { trigger } from "../../utils/events";
 import { Board } from "./Board";
 import { NameInput } from "./NameInput";
+import { Navigation } from "./Navigation";
 import { ResultsHistory } from "./ResultsHistory";
 import { SymbolSelector } from "./SymbolSelector";
 
 export const Game: FC = () => {
   const store = useStore();
-  const { gameState, setGameState, resetGame } = useGameContext();
+  const { gameState, setGameState } = useGameContext();
 
   const findPlayerWithSymbol = (symbol: PlayerCheckMark) => {
     return gameState.players.human.symbol === symbol
       ? gameState.players.human
       : gameState.players.ai;
-  };
-
-  const setSelectedPage = (page: typeof gameState.currentPage) => {
-    if (gameState.currentGameStatus !== "in progress") resetGame();
-
-    setGameState({
-      currentPage: page,
-    });
   };
 
   const toggleNextPlayer = () => {
@@ -149,62 +135,7 @@ export const Game: FC = () => {
       transition={{ delay: 1.5, duration: 1 }}
       tw="flex w-full sm:w-auto flex-col justify-center items-center gap-6"
     >
-      <div tw="w-full grid grid-cols-3 all-child:(place-self-center)">
-        <AnimatePresence>
-          {gameState.currentPage !== "setup" && (
-            <motion.button
-              type="button"
-              key="setupPageButton"
-              {...fadeAndGrowAnimation}
-              transition={{ duration: 0.25 }}
-              tw="w-10 h-10 col-start-1"
-              onClick={() => setSelectedPage("setup")}
-            >
-              <HiOutlineCog tw="transform transition-all duration-700 w-full h-full hover:(rotate-45 text-primary-400)" />
-            </motion.button>
-          )}
-
-          {!isBoardEmpty(gameState.boardCells) &&
-            gameState.currentPage === "board" && (
-              <motion.button
-                type="button"
-                key="resetButton"
-                {...fadeAndGrowAnimation}
-                transition={{ duration: 0.25 }}
-                tw="w-8 h-8 col-start-2 row-start-1"
-                onClick={() => resetGame()}
-              >
-                <FaSync tw="transform transition-all duration-700 w-full h-full hover:(rotate-180 text-primary-400)" />
-              </motion.button>
-            )}
-
-          {gameState.currentPage === "results" && (
-            <motion.button
-              type="button"
-              key="boardPageButton"
-              {...fadeAndGrowAnimation}
-              transition={{ duration: 0.25 }}
-              tw="w-8 h-8 col-start-2 row-start-1"
-              onClick={() => setSelectedPage("board")}
-            >
-              <HiOutlineViewGrid tw="w-full h-full transition-colors duration-700 hover:text-primary-400" />
-            </motion.button>
-          )}
-
-          {store.recordedGames.length > 0 && (
-            <motion.button
-              type="button"
-              key="resultsPageButton"
-              {...fadeAndGrowAnimation}
-              transition={{ duration: 0.25 }}
-              tw="w-10 h-10 col-start-3"
-              onClick={() => setSelectedPage("results")}
-            >
-              <HiOutlineViewList tw="w-full h-full transition-colors duration-700 hover:text-primary-400" />
-            </motion.button>
-          )}
-        </AnimatePresence>
-      </div>
+      <Navigation />
 
       <AnimatePresence exitBeforeEnter>
         <motion.div
