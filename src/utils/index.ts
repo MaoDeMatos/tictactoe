@@ -14,6 +14,10 @@ export const isBoardFilled = (boardCells: PlayerCheckMark[]) => {
   return boardCells.includes(null) ? false : true;
 };
 
+export const isBoardEmpty = (boardCells: PlayerCheckMark[]) => {
+  return boardCells.includes("o" || "x") ? false : true;
+};
+
 export const calculateWin = (boardCells: PlayerCheckMark[]) => {
   const winningCombinations = [
     // Horizontal

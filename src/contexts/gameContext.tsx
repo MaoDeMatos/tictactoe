@@ -6,7 +6,7 @@ import { findMessageByName } from "../utils";
 import { trigger } from "../utils/events";
 
 export type GameState = {
-  selectedPage: "setup" | "board" | "results";
+  currentPage: "setup" | "board" | "results";
   players: Players;
   nextPlayer: keyof Players;
   boardCells: PlayerCheckMark[];
@@ -14,7 +14,7 @@ export type GameState = {
 };
 
 const gameStateDefaultValue: GameState = {
-  selectedPage: "setup",
+  currentPage: "setup",
   players: {
     human: { name: "David", symbol: "o" },
     ai: { name: "the AI", symbol: "x" },
@@ -43,7 +43,7 @@ const GameContextProvider: FC<HasChildren> = props => {
     setGameState({
       ...gameStateDefaultValue,
       players: gameState.players,
-      selectedPage: gameState.selectedPage,
+      currentPage: gameState.currentPage,
     });
     trigger(
       "changeMessage",

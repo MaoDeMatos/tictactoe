@@ -34,7 +34,7 @@ export const NameInput: FC = () => {
       },
     });
 
-    setGameState({ selectedPage: "board" });
+    setGameState({ currentPage: "board" });
   }
 
   return (

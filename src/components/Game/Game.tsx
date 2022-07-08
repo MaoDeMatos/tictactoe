@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect } from "react";
 import { FaSync } from "react-icons/fa";
-import "twin.macro";
+import { HiOutlineCog, HiOutlineViewList } from "react-icons/hi";
+import tw, { styled } from "twin.macro";
 
 import { PlayerCheckMark } from "../../types/GeneralTypes";
 
@@ -10,6 +11,7 @@ import {
   calculateWin,
   findCell,
   findMessageByName,
+  isBoardEmpty,
   isBoardFilled,
 } from "../../utils";
 import { trigger } from "../../utils/events";
@@ -24,6 +26,14 @@ export const Game: FC = () => {
     return gameState.players.human.symbol === symbol
       ? gameState.players.human
       : gameState.players.ai;
+  };
+
+  const setSelectedPage = (page: typeof gameState.currentPage) => {
+    if (gameState.currentGameStatus !== "in progress") resetGame();
+
+    setGameState({
+      currentPage: page,
+    });
   };
 
   const toggleNextPlayer = () => {
@@ -98,46 +108,48 @@ export const Game: FC = () => {
 
   // On "selectedPage" change
   useEffect(() => {
-    if (gameState.selectedPage === "setup") {
+    if (gameState.currentPage === "setup") {
       trigger("changeMessage", findMessageByName("enterYourName"));
-    } else if (gameState.selectedPage === "board") {
+    } else if (gameState.currentPage === "board") {
       trigger(
         "changeMessage",
         findMessageByName("initBoard")(gameState.players.human.symbol)
       );
-    } else if (gameState.selectedPage === "results") {
+    } else if (gameState.currentPage === "results") {
       trigger("changeMessage", findMessageByName("resultsHeader"));
     }
-  }, [gameState.selectedPage]);
+  }, [gameState.currentPage]);
 
   return (
     <motion.main
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 1.5, duration: 1 }}
+      tw="flex w-full sm:w-auto flex-col justify-center items-center gap-6"
     >
-      {/* <button
-        type="button"
-        onClick={() =>
-          selectedPage === "setup"
-            ? setSelectedPage("board")
-            : setSelectedPage("setup")
-        }
-      >
-        Page toggle
-      </button> */}
+      <div tw="w-full grid grid-cols-3 all-child:(place-self-center)">
+        <AnimatePresence>
+          {gameState.currentPage !== "setup" && (
+            <motion.button
+              type="button"
+              key={"setupPageButton"}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.25 }}
+              tw="w-10 h-10 col-start-1"
+              onClick={() =>
+                gameState.currentPage === "setup"
+                  ? setSelectedPage("board")
+                  : setSelectedPage("setup")
+              }
+            >
+              <HiOutlineCog tw="transform transition-transform duration-700 w-full h-full hover:(rotate-45)" />
+            </motion.button>
+          )}
 
-      <AnimatePresence exitBeforeEnter>
-        <motion.div
-          key={gameState.selectedPage}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.25 }}
-          tw="flex flex-col justify-center items-center gap-8"
-        >
-          <AnimatePresence>
-            {gameState.currentGameStatus !== "in progress" && (
+          {!isBoardEmpty(gameState.boardCells) &&
+            gameState.currentPage === "board" && (
               <motion.button
                 type="button"
                 key={"resetButton"}
@@ -145,29 +157,61 @@ export const Game: FC = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.25 }}
+                tw="w-8 h-8 col-start-2"
                 onClick={() => resetGame()}
-                tw="w-8 h-8"
               >
                 <FaSync tw="transform transition-transform duration-700 w-full h-full hover:(rotate-180)" />
               </motion.button>
             )}
-          </AnimatePresence>
 
-          {gameState.selectedPage === "setup" ? (
-            <div tw="flex flex-col justify-center items-center gap-6">
+          <motion.button
+            type="button"
+            key={"resultsPageButton"}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.25 }}
+            tw="w-10 h-10 col-start-3"
+            onClick={() => null}
+          >
+            <HiOutlineViewList tw="w-full h-full" />
+          </motion.button>
+        </AnimatePresence>
+      </div>
+
+      <AnimatePresence exitBeforeEnter>
+        <motion.div
+          key={gameState.currentPage}
+          initial={{ opacity: 0, scale: 0.9, height: 0 }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            height: "auto",
+          }}
+          exit={{ opacity: 0, scale: 0.9, height: 0 }}
+          transition={{ duration: 0.25 }}
+          tw="flex flex-col justify-center items-center gap-8"
+        >
+          {gameState.currentPage === "setup" ? (
+            <VerticalCenteredContainer>
+              {/* TODO: Add disabled variant to SymbolSelector when game is in progress */}
               <SymbolSelector />
               <NameInput />
-            </div>
-          ) : gameState.selectedPage === "board" ? (
+            </VerticalCenteredContainer>
+          ) : gameState.currentPage === "board" ? (
             <Board
               boardCells={gameState.boardCells}
               clickHandler={handleClick}
             />
-          ) : gameState.selectedPage === "results" ? (
-            <div>Results</div>
+          ) : gameState.currentPage === "results" ? (
+            <VerticalCenteredContainer>Results</VerticalCenteredContainer>
           ) : null}
         </motion.div>
       </AnimatePresence>
     </motion.main>
   );
 };
+
+const VerticalCenteredContainer = styled(motion.div)`
+  ${tw`flex flex-col justify-center items-center gap-6`}
+`;
