@@ -160,7 +160,7 @@ export const Game: FC = () => {
               tw="w-10 h-10 col-start-1"
               onClick={() => setSelectedPage("setup")}
             >
-              <HiOutlineCog tw="transform transition-transform duration-700 w-full h-full hover:(rotate-45)" />
+              <HiOutlineCog tw="transform transition-all duration-700 w-full h-full hover:(rotate-45 text-primary-400)" />
             </motion.button>
           )}
 
@@ -174,7 +174,7 @@ export const Game: FC = () => {
                 tw="w-8 h-8 col-start-2 row-start-1"
                 onClick={() => resetGame()}
               >
-                <FaSync tw="transform transition-transform duration-700 w-full h-full hover:(rotate-180)" />
+                <FaSync tw="transform transition-all duration-700 w-full h-full hover:(rotate-180 text-primary-400)" />
               </motion.button>
             )}
 
@@ -187,7 +187,7 @@ export const Game: FC = () => {
               tw="w-8 h-8 col-start-2 row-start-1"
               onClick={() => setSelectedPage("board")}
             >
-              <HiOutlineViewGrid tw="transform transition-transform duration-700 w-full h-full hover:(scale-110)" />
+              <HiOutlineViewGrid tw="w-full h-full transition-colors duration-700 hover:text-primary-400" />
             </motion.button>
           )}
 
@@ -200,7 +200,7 @@ export const Game: FC = () => {
               tw="w-10 h-10 col-start-3"
               onClick={() => setSelectedPage("results")}
             >
-              <HiOutlineViewList tw="w-full h-full" />
+              <HiOutlineViewList tw="w-full h-full transition-colors duration-700 hover:text-primary-400" />
             </motion.button>
           )}
         </AnimatePresence>
