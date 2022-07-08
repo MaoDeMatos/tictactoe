@@ -26,8 +26,11 @@ const GameContextProvider: FC<HasChildren> = props => {
   const gameStateDefaultValue: GameState = {
     currentPage: "setup",
     players: {
-      human: { name: store.playerName ?? "", symbol: "o" },
-      ai: { name: "the AI", symbol: "x" },
+      human: store.lastPlayer,
+      ai: {
+        name: "the AI",
+        symbol: store.lastPlayer.symbol === "x" ? "o" : "x",
+      },
     },
     nextPlayer: "human",
     boardCells: Array(9).fill(null),

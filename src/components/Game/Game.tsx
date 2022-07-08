@@ -7,6 +7,7 @@ import tw, { styled } from "twin.macro";
 import { PlayerCheckMark } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
+import { useStore } from "../../hooks/useStore";
 import { fadeAndGrowAnimation } from "../../style/Animations";
 import {
   calculateWin,
@@ -21,6 +22,7 @@ import { NameInput } from "./NameInput";
 import { SymbolSelector } from "./SymbolSelector";
 
 export const Game: FC = () => {
+  const store = useStore();
   const { gameState, setGameState, resetGame } = useGameContext();
 
   const findPlayerWithSymbol = (symbol: PlayerCheckMark) => {
@@ -61,15 +63,22 @@ export const Game: FC = () => {
     if (isBoardFilled(newBoard) && !winningSymbol) {
       trigger("changeMessage", findMessageByName("gameTie"));
       setGameState({ currentGameStatus: "tie" });
+
+      store.setLastPlayer(gameState.players.human);
+      store.addToRecordedGames({ date: new Date(), winner: null });
+
       return;
     }
 
     if (winningSymbol) {
-      trigger(
-        "changeMessage",
-        findMessageByName("gameWon")(findPlayerWithSymbol(winningSymbol).name)
-      );
+      const winner = findPlayerWithSymbol(winningSymbol);
+
+      trigger("changeMessage", findMessageByName("gameWon")(winner.name));
       setGameState({ currentGameStatus: "finished" });
+
+      store.setLastPlayer(gameState.players.human);
+      store.addToRecordedGames({ date: new Date(), winner: winner });
+
       return;
     }
 

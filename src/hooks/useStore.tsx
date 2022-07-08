@@ -5,22 +5,26 @@ import { PlayerType } from "../types/GeneralTypes";
 
 type RecordedGame = {
   date: Date;
-  winner: PlayerType;
+  winner: PlayerType | null;
 };
 
 type GamesHistoryStore = {
-  playerName: string;
+  lastPlayer: PlayerType;
   recordedGames: RecordedGame[];
+  setLastPlayer: (newPlayer: PlayerType) => void;
+  deleteRecordedGames: () => void;
+  addToRecordedGames: (newGame: RecordedGame) => void;
 };
 
 export const useStore = create<GamesHistoryStore>()(
   persist(
     set => ({
-      playerName: "",
-      setPlayerName: (newName: string) => set(() => ({ playerName: newName })),
+      lastPlayer: { name: "", symbol: "o" },
       recordedGames: [],
-      deleteRecordedGames: () => set(state => ({ recordedGames: [] })),
-      addRecordedGames: (newGame: RecordedGame) =>
+      setLastPlayer: (newPlayer: PlayerType) =>
+        set(() => ({ lastPlayer: newPlayer })),
+      deleteRecordedGames: () => set(() => ({ recordedGames: [] })),
+      addToRecordedGames: (newGame: RecordedGame) =>
         set(state => ({
           recordedGames: [...state.recordedGames, { ...newGame }],
         })),
