@@ -1,6 +1,6 @@
 import { Dispatch, FC, createContext, useContext, useReducer } from "react";
 
-import { HasChildren, PlayerCheckMark, Players } from "../types/GeneralTypes";
+import { BoardType, HasChildren, Players } from "../types/GeneralTypes";
 
 import { useStore } from "../hooks/useStore";
 import { findMessageByName } from "../utils";
@@ -10,7 +10,7 @@ export type GameState = {
   currentPage: "setup" | "board" | "results";
   players: Players;
   nextPlayer: keyof Players;
-  boardCells: PlayerCheckMark[];
+  boardContent: BoardType;
   currentGameStatus: "in progress" | "finished" | "tie";
 };
 
@@ -33,7 +33,7 @@ const GameContextProvider: FC<HasChildren> = props => {
       },
     },
     nextPlayer: "human",
-    boardCells: Array(9).fill(null),
+    boardContent: Array(9).fill(null),
     currentGameStatus: "in progress",
   };
 
