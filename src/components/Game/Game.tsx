@@ -7,6 +7,7 @@ import tw, { styled } from "twin.macro";
 import { PlayerCheckMark } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
+import { fadeAndGrowAnimation } from "../../style/Animations";
 import {
   calculateWin,
   findCell,
@@ -122,8 +123,7 @@ export const Game: FC = () => {
 
   return (
     <motion.main
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
+      {...fadeAndGrowAnimation}
       transition={{ delay: 1.5, duration: 1 }}
       tw="flex w-full sm:w-auto flex-col justify-center items-center gap-6"
     >
@@ -133,9 +133,7 @@ export const Game: FC = () => {
             <motion.button
               type="button"
               key={"setupPageButton"}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              {...fadeAndGrowAnimation}
               transition={{ duration: 0.25 }}
               tw="w-10 h-10 col-start-1"
               onClick={() =>
@@ -153,9 +151,7 @@ export const Game: FC = () => {
               <motion.button
                 type="button"
                 key={"resetButton"}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                {...fadeAndGrowAnimation}
                 transition={{ duration: 0.25 }}
                 tw="w-8 h-8 col-start-2"
                 onClick={() => resetGame()}
@@ -167,9 +163,7 @@ export const Game: FC = () => {
           <motion.button
             type="button"
             key={"resultsPageButton"}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            {...fadeAndGrowAnimation}
             transition={{ duration: 0.25 }}
             tw="w-10 h-10 col-start-3"
             onClick={() => null}

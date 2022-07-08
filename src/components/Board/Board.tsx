@@ -5,6 +5,7 @@ import tw, { theme } from "twin.macro";
 import { PlayerCheckMark } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
+import { fadeAndGrowAnimation } from "../../style/Animations";
 import { GlassCard } from "../shared/Cards";
 import { Cell, Circle, Cross } from "./Board.components";
 
@@ -33,17 +34,13 @@ export const Board: FC<{
               {box === "o" ? (
                 <Circle
                   key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  {...fadeAndGrowAnimation}
                   transition={{ duration: 0.25 }}
                 />
               ) : box === "x" ? (
                 <Cross
                   key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  {...fadeAndGrowAnimation}
                   transition={{ duration: 0.25 }}
                   tw="w-4/5 h-4/5"
                 />
