@@ -16,18 +16,11 @@ export const ResultsHistory: FC = () => {
       </div>
 
       <div tw="max-h-80 pr-1 overflow-y-auto flex flex-col justify-between items-center divide-y divide-slate-100">
-        {store.recordedGames.map(result => (
+        {[...store.recordedGames].reverse().map(result => (
           <div
             key={result.id}
             tw="w-full pt-2 flex justify-between items-center pb-1 px-2"
           >
-            {/* <p>
-              {result.winner
-                ? `${
-                    result.winner.name
-                  } (${result.winner.symbol?.toUpperCase()})`
-                : "Tie !"}
-            </p> */}
             <div tw="inline-flex justify-center items-center">
               {result.winner ? (
                 <Fragment>
