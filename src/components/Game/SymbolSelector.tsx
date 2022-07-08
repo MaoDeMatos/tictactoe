@@ -6,25 +6,35 @@ import type { PlayerCheckMark } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
 import { GlassStyles } from "../../style/GlassStyles";
+import { findMessageByName, isBoardEmpty } from "../../utils";
+import { trigger } from "../../utils/events";
 import { Circle, Cross } from "../Board";
 
 export const SymbolSelector: FC = () => {
   const { gameState, setGameState } = useGameContext();
-  const [enabled, setEnabled] = useState(true);
+  const [enabled, setEnabled] = useState(
+    gameState.players.human.symbol === "o" ? true : false
+  );
+  const isClickable =
+    gameState.currentGameStatus !== "in progress" ||
+    isBoardEmpty(gameState.boardCells);
 
-  const handleChange = () => {
-    const nextState = !enabled;
-    setEnabled(nextState);
-    const [humanSym, aiSym]: PlayerCheckMark[] = nextState
-      ? ["o", "x"]
-      : ["x", "o"];
-    setGameState({
-      players: {
-        human: { ...gameState.players.human, symbol: humanSym },
-        ai: { ...gameState.players.ai, symbol: aiSym },
-      },
-    });
-  };
+  const handleChange = isClickable
+    ? () => {
+        const nextState = !enabled;
+        setEnabled(nextState);
+        const [humanSym, aiSym]: PlayerCheckMark[] = nextState
+          ? ["o", "x"]
+          : ["x", "o"];
+        setGameState({
+          players: {
+            human: { ...gameState.players.human, symbol: humanSym },
+            ai: { ...gameState.players.ai, symbol: aiSym },
+          },
+        });
+      }
+    : () =>
+        trigger("changeMessage", findMessageByName("cannotChangeSymbolError"));
 
   return (
     // @ts-ignore
@@ -34,6 +44,7 @@ export const SymbolSelector: FC = () => {
       css={[
         tw`transition ease-in-out bg-slate-200 text-slate-100 backdrop-blur-sm relative inline-flex h-10 w-24 items-center rounded-full`,
         GlassStyles,
+        !isClickable && tw`opacity-60`,
       ]}
     >
       <span

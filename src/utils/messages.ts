@@ -51,4 +51,9 @@ export const messagesToDisplay: MessagesToDisplayType = [
     type: "error",
     message: "You must click on an empty cell !",
   }),
+  () => ({
+    name: "cannotChangeSymbolError",
+    type: "error",
+    message: "You can't change your symbol if a game is still in progress !",
+  }),
 ];
