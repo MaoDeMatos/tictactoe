@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 import { PlayerType } from "../types/GeneralTypes";
 
 type RecordedGame = {
+  id: number;
   date: Date;
   winner: PlayerType | null;
 };

@@ -65,7 +65,11 @@ export const Game: FC = () => {
       setGameState({ currentGameStatus: "tie" });
 
       store.setLastPlayer(gameState.players.human);
-      store.addToRecordedGames({ date: new Date(), winner: null });
+      store.addToRecordedGames({
+        id: store.recordedGames.length,
+        date: new Date(),
+        winner: null,
+      });
 
       return;
     }
@@ -77,7 +81,11 @@ export const Game: FC = () => {
       setGameState({ currentGameStatus: "finished" });
 
       store.setLastPlayer(gameState.players.human);
-      store.addToRecordedGames({ date: new Date(), winner: winner });
+      store.addToRecordedGames({
+        id: Date.now(),
+        date: new Date(),
+        winner: winner,
+      });
 
       return;
     }
