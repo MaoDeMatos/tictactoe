@@ -1,7 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect } from "react";
 import { FaSync } from "react-icons/fa";
-import { HiOutlineCog, HiOutlineViewList } from "react-icons/hi";
+import {
+  HiOutlineCog,
+  HiOutlineViewGrid,
+  HiOutlineViewList,
+} from "react-icons/hi";
 import tw, { styled } from "twin.macro";
 
 import { PlayerCheckMark } from "../../types/GeneralTypes";
@@ -19,6 +23,7 @@ import {
 import { trigger } from "../../utils/events";
 import { Board } from "./Board";
 import { NameInput } from "./NameInput";
+import { ResultsHistory } from "./ResultsHistory";
 import { SymbolSelector } from "./SymbolSelector";
 
 export const Game: FC = () => {
@@ -149,15 +154,11 @@ export const Game: FC = () => {
           {gameState.currentPage !== "setup" && (
             <motion.button
               type="button"
-              key={"setupPageButton"}
+              key="setupPageButton"
               {...fadeAndGrowAnimation}
               transition={{ duration: 0.25 }}
               tw="w-10 h-10 col-start-1"
-              onClick={() =>
-                gameState.currentPage === "setup"
-                  ? setSelectedPage("board")
-                  : setSelectedPage("setup")
-              }
+              onClick={() => setSelectedPage("setup")}
             >
               <HiOutlineCog tw="transform transition-transform duration-700 w-full h-full hover:(rotate-45)" />
             </motion.button>
@@ -167,7 +168,7 @@ export const Game: FC = () => {
             gameState.currentPage === "board" && (
               <motion.button
                 type="button"
-                key={"resetButton"}
+                key="resetButton"
                 {...fadeAndGrowAnimation}
                 transition={{ duration: 0.25 }}
                 tw="w-8 h-8 col-start-2"
@@ -177,16 +178,31 @@ export const Game: FC = () => {
               </motion.button>
             )}
 
-          <motion.button
-            type="button"
-            key={"resultsPageButton"}
-            {...fadeAndGrowAnimation}
-            transition={{ duration: 0.25 }}
-            tw="w-10 h-10 col-start-3"
-            onClick={() => null}
-          >
-            <HiOutlineViewList tw="w-full h-full" />
-          </motion.button>
+          {gameState.currentPage === "results" && (
+            <motion.button
+              type="button"
+              key="boardPageButton"
+              {...fadeAndGrowAnimation}
+              transition={{ duration: 0.25 }}
+              tw="w-8 h-8 col-start-2"
+              onClick={() => setSelectedPage("board")}
+            >
+              <HiOutlineViewGrid tw="transform transition-transform duration-700 w-full h-full hover:(scale-110)" />
+            </motion.button>
+          )}
+
+          {store.recordedGames.length > 0 && (
+            <motion.button
+              type="button"
+              key="resultsPageButton"
+              {...fadeAndGrowAnimation}
+              transition={{ duration: 0.25 }}
+              tw="w-10 h-10 col-start-3"
+              onClick={() => setSelectedPage("results")}
+            >
+              <HiOutlineViewList tw="w-full h-full" />
+            </motion.button>
+          )}
         </AnimatePresence>
       </div>
 
@@ -201,7 +217,7 @@ export const Game: FC = () => {
           }}
           exit={{ opacity: 0, scale: 0.9, height: 0 }}
           transition={{ duration: 0.25 }}
-          tw="flex flex-col justify-center items-center gap-8"
+          tw="flex flex-col w-full justify-center items-center gap-8"
         >
           {gameState.currentPage === "setup" ? (
             <VerticalCenteredContainer>
@@ -215,7 +231,7 @@ export const Game: FC = () => {
               clickHandler={handleClick}
             />
           ) : gameState.currentPage === "results" ? (
-            <VerticalCenteredContainer>Results</VerticalCenteredContainer>
+            <ResultsHistory />
           ) : null}
         </motion.div>
       </AnimatePresence>

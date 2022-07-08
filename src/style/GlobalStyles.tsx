@@ -19,6 +19,19 @@ const customStyles = css({
   "::selection": {
     ...tw`bg-primary-300 text-slate-900`,
   },
+  "::-webkit-scrollbar": {
+    paddingLeft: "2px",
+    width: "0.5rem",
+    height: "0.5rem",
+  },
+  "::-webkit-scrollbar-thumb": {
+    backgroundColor: theme`colors.primary.600`,
+    borderRadius: "1rem",
+  },
+  // "::-webkit-scrollbar-button,::-webkit-scrollbar-track,::-webkit-scrollbar-track-piece":
+  //   {
+  // background: "transparent",
+  // },
 });
 
 const GlobalStyles = () => (

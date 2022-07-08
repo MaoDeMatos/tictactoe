@@ -55,7 +55,7 @@ export const SymbolSelector: FC = () => {
       />
       <Circle
         css={[
-          enabled ? tw`h-8 w-8` : tw`h-5 w-5 border-2`,
+          enabled ? tw`h-8 w-8` : tw`h-5 w-5`,
           tw`transition-all absolute right-2`,
         ]}
       />
