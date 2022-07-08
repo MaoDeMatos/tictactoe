@@ -30,3 +30,29 @@ jobs:
       - run: yarn format
       - run: yarn test
       - run: yarn build
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: "yarn"
+
+      - name: Netlify deploy
+        uses: nwtgck/actions-netlify@v1.2.3
+        with:
+          # Publish directory
+          publish-dir: "./dist"
+          # Production branch
+          production-branch: "master"
+          # Indicate wether to deploy production build
+          production-deploy: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_DEPLOYMENT_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
