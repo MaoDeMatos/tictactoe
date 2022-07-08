@@ -17,7 +17,7 @@ import {
   isBoardFilled,
 } from "../../utils";
 import { trigger } from "../../utils/events";
-import { Board } from "../Board";
+import { Board } from "./Board";
 import { NameInput } from "./NameInput";
 import { SymbolSelector } from "./SymbolSelector";
 

@@ -8,7 +8,7 @@ import { useGameContext } from "../../contexts/gameContext";
 import { GlassStyles } from "../../style/GlassStyles";
 import { findMessageByName, isBoardEmpty } from "../../utils";
 import { trigger } from "../../utils/events";
-import { Circle, Cross } from "../Board";
+import { Circle, Cross } from "./Board";
 
 export const SymbolSelector: FC = () => {
   const { gameState, setGameState } = useGameContext();
