@@ -2,6 +2,7 @@ import { Dispatch, FC, createContext, useContext, useReducer } from "react";
 
 import { HasChildren, PlayerCheckMark, Players } from "../types/GeneralTypes";
 
+import { useStore } from "../hooks/useStore";
 import { findMessageByName } from "../utils";
 import { trigger } from "../utils/events";
 
@@ -13,17 +14,6 @@ export type GameState = {
   currentGameStatus: "in progress" | "finished" | "tie";
 };
 
-const gameStateDefaultValue: GameState = {
-  currentPage: "setup",
-  players: {
-    human: { name: "David", symbol: "o" },
-    ai: { name: "the AI", symbol: "x" },
-  },
-  nextPlayer: "human",
-  boardCells: Array(9).fill(null),
-  currentGameStatus: "in progress",
-};
-
 const GameCtx = createContext<{
   gameState: GameState;
   setGameState: Dispatch<Partial<GameState>>;
@@ -31,6 +21,19 @@ const GameCtx = createContext<{
 }>(null!);
 
 const GameContextProvider: FC<HasChildren> = props => {
+  const store = useStore();
+
+  const gameStateDefaultValue: GameState = {
+    currentPage: "setup",
+    players: {
+      human: { name: store.playerName ?? "", symbol: "o" },
+      ai: { name: "the AI", symbol: "x" },
+    },
+    nextPlayer: "human",
+    boardCells: Array(9).fill(null),
+    currentGameStatus: "in progress",
+  };
+
   const [gameState, setGameState] = useReducer(
     (state: GameState, newStateProps: Partial<GameState>) => ({
       ...state,
