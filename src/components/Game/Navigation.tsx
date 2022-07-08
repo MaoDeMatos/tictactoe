@@ -44,7 +44,7 @@ export const Navigation: FC = () => {
           </motion.button>
         )}
 
-        {!isBoardEmpty(gameState.boardCells) &&
+        {!isBoardEmpty(gameState.boardContent) &&
           gameState.currentPage === "board" && (
             <motion.button
               type="button"

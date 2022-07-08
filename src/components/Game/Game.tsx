@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect } from "react";
 import tw, { styled } from "twin.macro";
 
-import { PlayerCheckMark } from "../../types/GeneralTypes";
+import { CellType } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
 import { useStore } from "../../hooks/useStore";
@@ -24,7 +24,7 @@ export const Game: FC = () => {
   const store = useStore();
   const { gameState, setGameState } = useGameContext();
 
-  const findPlayerWithSymbol = (symbol: PlayerCheckMark) => {
+  const findPlayerWithSymbol = (symbol: CellType) => {
     return gameState.players.human.symbol === symbol
       ? gameState.players.human
       : gameState.players.ai;
@@ -37,17 +37,17 @@ export const Game: FC = () => {
   };
 
   const tickCell = (idx: number) => {
-    if (gameState.boardCells[idx]) {
+    if (gameState.boardContent[idx]) {
       trigger("changeMessage", findMessageByName("cellNotEmptyError"));
       return;
     }
 
     // Create new array from boardCells as
     // using its ref won't fire a re-render
-    const newBoard = [...gameState.boardCells];
+    const newBoard = [...gameState.boardContent];
     newBoard[idx] = gameState.players[gameState.nextPlayer].symbol;
 
-    setGameState({ boardCells: newBoard });
+    setGameState({ boardContent: newBoard });
 
     const winningSymbol = calculateWin(newBoard);
 
@@ -105,7 +105,7 @@ export const Game: FC = () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         const bestCell = findCell(
-          [...gameState.boardCells],
+          [...gameState.boardContent],
           gameState.players.ai
         );
         if (bestCell !== -1) tickCell(bestCell);
@@ -158,7 +158,7 @@ export const Game: FC = () => {
             </VerticalCenteredContainer>
           ) : gameState.currentPage === "board" ? (
             <Board
-              boardCells={gameState.boardCells}
+              boardCells={gameState.boardContent}
               clickHandler={handleClick}
             />
           ) : gameState.currentPage === "results" ? (

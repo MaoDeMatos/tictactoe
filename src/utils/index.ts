@@ -1,6 +1,20 @@
-import { PlayerCheckMark, PlayerType } from "./../types/GeneralTypes";
+import { BoardType, CellType, PlayerType } from "./../types/GeneralTypes";
 
 import { messagesToDisplay } from "./messages";
+
+export const winningCombinations = [
+  // Horizontal
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+  // Diagonal
+  [1, 5, 9],
+  [3, 5, 7],
+  // Vertical
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9],
+];
 
 export const capitalizeFirstLetter = (text: string = "") => {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -10,29 +24,15 @@ export const findMessageByName = (messageName: string = "") =>
   messagesToDisplay.find(el => el().name === messageName) ??
   messagesToDisplay[0];
 
-export const isBoardFilled = (boardCells: PlayerCheckMark[]) => {
+export const isBoardFilled = (boardCells: BoardType) => {
   return boardCells.includes(null) ? false : true;
 };
 
-export const isBoardEmpty = (boardCells: PlayerCheckMark[]) => {
+export const isBoardEmpty = (boardCells: BoardType) => {
   return boardCells.includes("o" || "x") ? false : true;
 };
 
-export const calculateWin = (boardCells: PlayerCheckMark[]) => {
-  const winningCombinations = [
-    // Horizontal
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    // Diagonal
-    [1, 5, 9],
-    [3, 5, 7],
-    // Vertical
-    [1, 4, 7],
-    [2, 5, 8],
-    [3, 6, 9],
-  ];
-
+export const calculateWin = (boardCells: BoardType) => {
   for (const [a, b, c] of winningCombinations) {
     if (
       boardCells[a - 1] &&
@@ -47,10 +47,10 @@ export const calculateWin = (boardCells: PlayerCheckMark[]) => {
   return null;
 };
 
-export const findCell = (boardCells: PlayerCheckMark[], player: PlayerType) => {
-  const opponent: PlayerCheckMark = player.symbol === "x" ? "o" : "x";
+export const findCell = (boardCells: BoardType, player: PlayerType) => {
+  const opponent: CellType = player.symbol === "x" ? "o" : "x";
 
-  const minmax = (boardCells: PlayerCheckMark[], isPlayerTurn: boolean) => {
+  const minmax = (boardCells: BoardType, isPlayerTurn: boolean) => {
     const winningSymbol = calculateWin(boardCells);
 
     // "Cell" represents cell index in the board

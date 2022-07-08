@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FC } from "react";
 import tw, { theme } from "twin.macro";
 
-import { PlayerCheckMark } from "../../../types/GeneralTypes";
+import { BoardType } from "../../../types/GeneralTypes";
 
 import { useGameContext } from "../../../contexts/gameContext";
 import { fadeAndGrowAnimation } from "../../../style/Animations";
@@ -10,7 +10,7 @@ import { GlassCard } from "../../shared/Cards";
 import { Cell, Circle, Cross } from "./Board.components";
 
 export const Board: FC<{
-  boardCells: PlayerCheckMark[];
+  boardCells: BoardType;
   clickHandler: (id: number) => void;
 }> = ({ boardCells, clickHandler }) => {
   const { gameState } = useGameContext();

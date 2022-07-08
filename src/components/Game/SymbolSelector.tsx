@@ -2,7 +2,7 @@ import { Switch } from "@headlessui/react";
 import { FC, useState } from "react";
 import tw from "twin.macro";
 
-import type { PlayerCheckMark } from "../../types/GeneralTypes";
+import type { BoardType } from "../../types/GeneralTypes";
 
 import { useGameContext } from "../../contexts/gameContext";
 import { GlassStyles } from "../../style/GlassStyles";
@@ -17,13 +17,13 @@ export const SymbolSelector: FC = () => {
   );
   const isClickable =
     gameState.currentGameStatus !== "in progress" ||
-    isBoardEmpty(gameState.boardCells);
+    isBoardEmpty(gameState.boardContent);
 
   const handleChange = isClickable
     ? () => {
         const nextState = !enabled;
         setEnabled(nextState);
-        const [humanSym, aiSym]: PlayerCheckMark[] = nextState
+        const [humanSym, aiSym]: BoardType = nextState
           ? ["o", "x"]
           : ["x", "o"];
         setGameState({
