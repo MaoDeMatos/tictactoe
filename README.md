@@ -1,4 +1,20 @@
-# Vite + React & Typescript + Tailwind & twin.macro boilerplate
+# TS Tic Tac Toe
+
+## Functionnalities
+
+This app lets you play tictactoe with an "AI" (an algorithm) that plays the role of the 2nd player.
+
+It records the history of game results in your browser's local storage.
+
+Players can :
+
+- Choose is they want to play the "X" or "O" symbol
+- Choose their usename
+
+## Future upgrades (?)
+
+- [ ] Change who plays first depending on the symbol the player chose
+- [ ] Add a proper router for page management
 
 ## Caveats
 
