@@ -15,6 +15,7 @@ Players can :
 
 - [ ] Change who plays first depending on the symbol the player chose
 - [ ] Add a proper router for page management
+- [ ] Refactor to experiment with states machines (with [XState](https://xstate.js.org/) ?)
 
 ## Caveats
 
